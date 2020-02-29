@@ -1,9 +1,11 @@
-# advent-of-code-2015
-Advent Of Code 2015
+# Advent Of Code 2015
+Advent Of Code 2015 solutions
+
+https://adventofcode.com/2015
 
 #### Requirements
 
-Python 3.8.1
+Python 3.8
 
 #### Tests
 
