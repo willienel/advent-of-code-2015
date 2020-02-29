@@ -1,13 +1,13 @@
 import os
 
 
-def get_required_amount(sizes):
+def get_required_amount(dimensions):
 
     required_amount = 0
 
-    for size in sizes:
+    for dimension in dimensions:
 
-        length, width, height = size
+        length, width, height = dimension
 
         side_length_width = length * width
         side_width_height = width * height
