@@ -1,7 +1,9 @@
 import os
 
+last_fetched_signal_value = 0
 
-def get_signal_for_wire(instructions, signal_to_fetch, signal_values=None):
+
+def get_signal_for_wire(instructions, signal_to_fetch, signal_to_overwrite, signal_values=None):
 
     if signal_values is None:
         signal_values = dict()
@@ -56,12 +58,27 @@ def get_signal_for_wire(instructions, signal_to_fetch, signal_values=None):
             elif operation == "RSHIFT":
                 signal_values[output_instruction] = signal_value1 >> signal_value2
 
-    return get_signal_for_wire(instructions, signal_to_fetch, signal_values)
+    if signal_to_fetch in signal_values and signal_to_overwrite is not None:
+
+        modified_instruction = None
+        modified_instruction_index = None
+
+        for index, instruction in enumerate(instructions):
+            if instruction.strip().endswith(f"-> {signal_to_overwrite}"):
+                modified_instruction_index = index
+                modified_instruction = f"{signal_values[signal_to_fetch]} -> {signal_to_overwrite}"
+                break
+
+        if modified_instruction_index is not None and modified_instruction is not None:
+            instructions[modified_instruction_index] = modified_instruction
+            signal_values.clear()
+            signal_to_overwrite = None
+
+    return get_signal_for_wire(instructions, signal_to_fetch, signal_to_overwrite, signal_values)
 
 
 if __name__ == '__main__':
-
     with open(os.path.join(os.path.dirname(__file__), '../input.txt')) as input_file:
         d = input_file.readlines()
 
-    print(get_signal_for_wire(d, "a"))
+    print(get_signal_for_wire(d, "a", "b"))
